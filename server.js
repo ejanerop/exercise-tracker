@@ -74,7 +74,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
     .map((exercise) => ({
       description: exercise.description,
       duration: parseInt(exercise.duration),
-      date: exercise.date.toDateString(),
+      date: exercise.date,
     }));
   if (from) {
     userExercises = userExercises.filter((exercise) => {
