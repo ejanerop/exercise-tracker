@@ -69,9 +69,12 @@ app.get("/api/users/:_id/logs", (req, res) => {
   if (!user) {
     res.send("User not found");
   }
-  let userExercises = db.exercises.filter(
-    (exercise) => exercise._id === user._id
-  );
+  let userExercises = db.exercises
+    .filter((exercise) => exercise._id === user._id)
+    .map((exercise) => {
+      exercise.date = new Date(exercise.date);
+      return exercise;
+    });
   if (from) {
     userExercises = userExercises.filter((exercise) => {
       return exercise.date >= new Date(from);
@@ -92,7 +95,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
     log: userExercises.map((exercise) => ({
       description: exercise.description,
       duration: parseInt(exercise.duration),
-      date: new Date(exercise.date).toDateString(),
+      date: exercise.date.toDateString(),
     })),
   });
 });
